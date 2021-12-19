@@ -157,6 +157,7 @@ public class clientUDP : MonoBehaviour
     List<CustomClasses.Spawn> WaitingToSpawn = new List<CustomClasses.Spawn>();
     List<CustomClasses.Remove> WaitingToRemove = new List<CustomClasses.Remove>();
 
+    int sendFrameCounter = 0;
     int receiveFrameCounter = 0;
     float interpolationValue = 1;
     float interpolationTracker = 0;
@@ -242,6 +243,7 @@ public class clientUDP : MonoBehaviour
         }
 
         receiveFrameCounter++;
+        sendFrameCounter++;
     }
     public void AddInput(KeyCode input, string type)
     {
@@ -346,6 +348,21 @@ public class clientUDP : MonoBehaviour
                 newSocket.SendTo(stream.ToArray(), SocketFlags.None, ipep);
                 ACK++;
             }
+            /*if (sendFrameCounter >= 1)
+            {
+                if(inputList.Count > 0)
+                {
+                    MemoryStream stream = new MemoryStream();
+                    CustomClasses.Message temp = new CustomClasses.Message();
+                    temp.inputs = inputList;
+                    temp.ACK = ACK;
+                    stream = serializeJson(temp);
+                    sentMessages.Add(temp);
+                    newSocket.SendTo(stream.ToArray(), SocketFlags.None, ipep);
+                    ACK++;
+                }
+                sendFrameCounter = 0;
+            }*/
         }
 
     }
