@@ -160,11 +160,11 @@ MonoBehaviour:
   initialDynamicObjs:
   - {fileID: 970492075}
   - {fileID: 1211654024}
-  - {fileID: 2107451387}
+  - {fileID: 1746541729}
   - {fileID: 1676878281}
   Objs2Update: []
   gunRotation: {x: 0, y: 0, z: 0, w: 0}
-  gun: {fileID: 2107451387}
+  gun: {fileID: 1746541729}
 --- !u!4 &319738150
 Transform:
   m_ObjectHideFlags: 0
@@ -732,7 +732,7 @@ GameObject:
   - component: {fileID: 1746541732}
   - component: {fileID: 1746541731}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -745,26 +745,25 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1746541729}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.000000059605, y: 0, z: 0}
-  m_LocalScale: {x: 0.37603, y: 0.30753, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.67, y: 1.5, z: 0}
+  m_LocalScale: {x: 0.39829, y: 0.33238, z: 1.5134}
   m_Children: []
-  m_Father: {fileID: 2107451388}
-  m_RootOrder: 0
+  m_Father: {fileID: 970492078}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1746541731
-BoxCollider:
+--- !u!114 &1746541731
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1746541729}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f102fccdecb2942b56127905441722, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!23 &1746541732
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -929,47 +928,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56407fa74c2c82e4a9ecba53e3397cbc, type: 3}
---- !u!1 &2107451387
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2107451388}
-  - component: {fileID: 2107451389}
-  m_Layer: 0
-  m_Name: gun
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2107451388
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2107451387}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.29, z: 0.54}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1746541730}
-  m_Father: {fileID: 970492078}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2107451389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2107451387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89f102fccdecb2942b56127905441722, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
