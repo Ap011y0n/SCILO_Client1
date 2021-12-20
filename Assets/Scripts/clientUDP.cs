@@ -210,7 +210,7 @@ public class clientUDP : MonoBehaviour
                     GameObject obj2update = dynamicObjects[Objs2Update[i].guid];
                     if (firstInterpolationFrame == true)
                     {
-                        Vector3 posChange = Objs2Update[i].position - obj2update.transform.position;
+                        Vector3 posChange = Objs2Update[i].position - obj2update.transform.localPosition;
                         Objs2Update[i].setPosChange(posChange);
                     }
                     //Debug.Log(obj.guid);
@@ -351,44 +351,58 @@ public class clientUDP : MonoBehaviour
           //  CustomClasses.SceneObject obj = new CustomClasses.SceneObject();
           //  obj.rotation = gunRotation;
           //  temp.objects.Add(obj);
-            if (inputList.Count > 0)
+            //if (inputList.Count > 0)
+            //{
+            //    MemoryStream stream = new MemoryStream();
+            //    CustomClasses.Message temp = new CustomClasses.Message();
+            //    CustomClasses.SceneObject obj = new CustomClasses.SceneObject();
+            //    foreach (KeyValuePair<string, GameObject> ah in dynamicObjects)
+            //    {
+            //        if (ah.Value == gun)
+            //            obj.guid = ah.Key;
+            //    }
+                   
+            //    obj.rotation = gunRotation;
+            //    temp.objects.Add(obj);
+            //    temp.inputs = inputList;
+            //    temp.ACK = ACK;
+            //    temp.addType("movement");
+            //    stream = serializeJson(temp);
+            //    sentMessages.Add(temp);
+            //    ACK++;
+            //    newSocket.SendTo(stream.ToArray(), SocketFlags.None, ipep);
+            //}
+          
+
+            if (sendFrameCounter >= 5)
             {
                 MemoryStream stream = new MemoryStream();
                 CustomClasses.Message temp = new CustomClasses.Message();
                 CustomClasses.SceneObject obj = new CustomClasses.SceneObject();
+                obj.rotation = gunRotation;
+
                 foreach (KeyValuePair<string, GameObject> ah in dynamicObjects)
                 {
                     if (ah.Value == gun)
                         obj.guid = ah.Key;
                 }
-                   
-                obj.rotation = gunRotation;
+
                 temp.objects.Add(obj);
                 temp.inputs = inputList;
                 temp.ACK = ACK;
                 temp.addType("movement");
-                stream = serializeJson(temp);
-                sentMessages.Add(temp);
-                ACK++;
-                newSocket.SendTo(stream.ToArray(), SocketFlags.None, ipep);
-            }
-          
-
-            /*if (sendFrameCounter >= 1)
-            {
-                if(inputList.Count > 0)
+                if (inputList.Count > 0)
                 {
-                    MemoryStream stream = new MemoryStream();
-                    CustomClasses.Message temp = new CustomClasses.Message();
-                    temp.inputs = inputList;
-                    temp.ACK = ACK;
-                    stream = serializeJson(temp);
+                   
                     sentMessages.Add(temp);
-                    newSocket.SendTo(stream.ToArray(), SocketFlags.None, ipep);
                     ACK++;
                 }
+                stream = serializeJson(temp);
+
+                newSocket.SendTo(stream.ToArray(), SocketFlags.None, ipep);
+
                 sendFrameCounter = 0;
-            }*/
+            }
         }
 
     }
