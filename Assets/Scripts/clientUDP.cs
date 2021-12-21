@@ -208,35 +208,44 @@ public class clientUDP : MonoBehaviour
 
                 if (Objs2Update[i].name != "")
                 {
-                    GameObject obj2update = dynamicObjects[Objs2Update[i].guid];
-                    if (firstInterpolationFrame == true)
+                    try
                     {
-                        Vector3 posChange = Objs2Update[i].position - obj2update.transform.localPosition;
-                        Objs2Update[i].setPosChange(posChange);
+                        GameObject obj2update = dynamicObjects[Objs2Update[i].guid];
+                        if (firstInterpolationFrame == true)
+                        {
+                            Vector3 posChange = Objs2Update[i].position - obj2update.transform.localPosition;
+                            Objs2Update[i].setPosChange(posChange);
+                        }
+                        //Debug.Log(obj.guid);
+                        if (obj2update != null)
+                        {
+                            //      Debug.Log("Interpolation Value: " + interpolationValue);
+                            //       Debug.Log(Objs2Update[i].returnPosChange());
+                            //      Debug.Log(Objs2Update[i].returnPosChange() / interpolationValue);
+                            Vector3 newpos = new Vector3();
+                            float x = Objs2Update[i].returnPosChange().x;
+                            float y = Objs2Update[i].returnPosChange().y;
+                            float z = Objs2Update[i].returnPosChange().z;
+                            //     Debug.Log("y = " + y.ToString() + "/ " + interpolationValue.ToString() + "= " + (y * interpolationValue).ToString());
+                            newpos.x = x * interpolationValue;
+                            newpos.y = y * interpolationValue;
+                            newpos.z = z * interpolationValue;
+
+                            obj2update.transform.position = obj2update.transform.position + newpos;
+
+                            obj2update.transform.rotation = Objs2Update[i].rotation;
+
+                            interpolationTracker += interpolationValue;
+                        }
+                        else
+                            Debug.LogWarning("Can't find object by name" + Objs2Update[i].name);
                     }
-                    //Debug.Log(obj.guid);
-                    if (obj2update != null)
+                    catch (SystemException e)
                     {
-                  //      Debug.Log("Interpolation Value: " + interpolationValue);
-                 //       Debug.Log(Objs2Update[i].returnPosChange());
-                  //      Debug.Log(Objs2Update[i].returnPosChange() / interpolationValue);
-                        Vector3 newpos = new Vector3();
-                        float x = Objs2Update[i].returnPosChange().x;
-                        float y = Objs2Update[i].returnPosChange().y;
-                        float z = Objs2Update[i].returnPosChange().z;
-                   //     Debug.Log("y = " + y.ToString() + "/ " + interpolationValue.ToString() + "= " + (y * interpolationValue).ToString());
-                        newpos.x = x * interpolationValue;
-                        newpos.y = y * interpolationValue;
-                        newpos.z = z * interpolationValue;
+                        Debug.LogError(e.ToString());
 
-                        obj2update.transform.position = obj2update.transform.position + newpos;
-
-                        obj2update.transform.rotation = Objs2Update[i].rotation;
-
-                        interpolationTracker += interpolationValue;
-                    }   
-                    else
-                        Debug.LogWarning("Can't find object by name" + Objs2Update[i].name);
+                    }
+                    
                 }
             }
             if (firstInterpolationFrame == true)
