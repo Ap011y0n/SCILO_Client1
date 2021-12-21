@@ -25,7 +25,7 @@ namespace CustomClasses
     [System.Serializable]
     public class Message
     {
-        public int ACK = -1;
+        public int ACK = 0;
         public List<string> messageTypes = new List<string>();
         public List<SceneObject> objects = new List<SceneObject>();
         public List<Input> inputs = new List<Input>();
@@ -170,6 +170,7 @@ public class clientUDP : MonoBehaviour
 
     public Quaternion gunRotation;
     public GameObject gun;
+    public jitterSender jitter;
     // Start is called before the first frame update
     void Start()
     {
@@ -275,6 +276,7 @@ public class clientUDP : MonoBehaviour
         ipep = new IPEndPoint(adress, port);
 
         newSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        
 
         MainThread = new Thread(UDPConnection);
         MainThread.Start();
@@ -388,12 +390,15 @@ public class clientUDP : MonoBehaviour
                 }
 
                 temp.objects.Add(obj);
-                temp.inputs = inputList;
-                temp.ACK = ACK;
+                
                 temp.addType("movement");
+
                 if (inputList.Count > 0)
                 {
-                   
+                  //  Debug.Log("ACK = " + ACK);
+                    temp.addType("acknowledgement");
+                    temp.ACK = ACK;
+                    temp.inputs = inputList;
                     sentMessages.Add(temp);
                     ACK++;
                 }
@@ -445,6 +450,7 @@ public class clientUDP : MonoBehaviour
             if(m.messageTypes.Contains("acknowledgement"))
             if (ACK > m.ACK)
             {
+                    Debug.LogError("ACK ERROR");
                 CustomClasses.Message temp = new CustomClasses.Message();
                 for (int i = 0; i < sentMessages.Count; i++)
                 {
@@ -545,7 +551,7 @@ public class clientUDP : MonoBehaviour
         BinaryReader reader = new BinaryReader(stream);
         stream.Seek(0, SeekOrigin.Begin);
         string json = reader.ReadString();
-        Debug.Log(json);
+       // Debug.Log(json);
         m = JsonUtility.FromJson<CustomClasses.Message>(json);
         return m;
     }
