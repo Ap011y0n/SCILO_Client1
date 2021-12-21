@@ -275,8 +275,8 @@ public class clientUDP : MonoBehaviour
         adress = IPAddress.Parse("127.0.0.1");
         ipep = new IPEndPoint(adress, port);
 
-        newSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        
+        jitter.Server = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+      //  jitter.Server = newSocket;
 
         MainThread = new Thread(UDPConnection);
         MainThread.Start();
@@ -289,14 +289,14 @@ public class clientUDP : MonoBehaviour
         try
         {
             byte[] msg = Encoding.ASCII.GetBytes("Ping");
-            newSocket.SendTo(msg, msg.Length, SocketFlags.None, ipep);
+            jitter.Server.SendTo(msg, msg.Length, SocketFlags.None, ipep);
 
             sender = new IPEndPoint(IPAddress.Any, 0);
             Remote = (EndPoint)sender;
             Debug.Log("Message sent to server");
 
             msg = new Byte[10000];
-            newSocket.ReceiveFrom(msg, ref Remote);
+            jitter.Server.ReceiveFrom(msg, ref Remote);
 
             interpolationValue = 1;
 
@@ -325,8 +325,8 @@ public class clientUDP : MonoBehaviour
             MainThread.Abort();
             try
             {
-                newSocket.Shutdown(SocketShutdown.Both);
-                newSocket.Close();
+                jitter.Server.Shutdown(SocketShutdown.Both);
+                jitter.Server.Close();
             }
 
             catch (SystemException d)
@@ -404,7 +404,9 @@ public class clientUDP : MonoBehaviour
                 }
                 stream = serializeJson(temp);
 
-                newSocket.SendTo(stream.ToArray(), SocketFlags.None, ipep);
+                jitter.sendMessage(stream.ToArray(), ipep);
+
+               // newSocket.SendTo(stream.ToArray(), SocketFlags.None, ipep);
 
                 sendFrameCounter = 0;
             }
@@ -417,7 +419,7 @@ public class clientUDP : MonoBehaviour
         {
             byte[] msg = new Byte[10000];
 
-            newSocket.ReceiveFrom(msg, ref Remote);
+            jitter.Server.ReceiveFrom(msg, ref Remote);
             if (receiveFrameCounter == 0)
                 receiveFrameCounter = 1;
             interpolationValue = 1.0f / receiveFrameCounter;
@@ -447,26 +449,27 @@ public class clientUDP : MonoBehaviour
                     max--;
                 }
             }
-            if(m.messageTypes.Contains("acknowledgement"))
-            if (ACK > m.ACK)
-            {
-                    Debug.LogError("ACK ERROR");
-                CustomClasses.Message temp = new CustomClasses.Message();
-                for (int i = 0; i < sentMessages.Count; i++)
+            if (m.messageTypes.Contains("acknowledgement"))
+                if (ACK > m.ACK)
                 {
-                    if (sentMessages[i].ACK > m.ACK)
+                    Debug.LogError("ACK ERROR");
+                    CustomClasses.Message temp = new CustomClasses.Message();
+                    for (int i = 0; i < sentMessages.Count; i++)
                     {
-                        for (int j = 0; j < sentMessages[i].inputs.Count; j++)
-                            temp.inputs.Add(sentMessages[i].inputs[j]);
+                        if (sentMessages[i].ACK > m.ACK)
+                        {
+                            for (int j = 0; j < sentMessages[i].inputs.Count; j++)
+                                temp.inputs.Add(sentMessages[i].inputs[j]);
+                        }
                     }
+
+                    temp.ACK = ACK;
+                    stream = serializeJson(temp);
+                    jitter.sendMessage(stream.ToArray(), ipep);
+                   // newSocket.SendTo(stream.ToArray(), SocketFlags.None, ipep);
+                    sentMessages.Clear();
+                    sentMessages.Add(temp);
                 }
-                
-                temp.ACK = ACK;
-                stream = serializeJson(temp);
-                newSocket.SendTo(stream.ToArray(), SocketFlags.None, ipep);
-                sentMessages.Clear();
-                sentMessages.Add(temp);
-            }
             if (m.messageTypes.Contains("spawn"))
             {
                 for(int i = 0; i < m.spawns.Count; i++)
@@ -494,8 +497,9 @@ public class clientUDP : MonoBehaviour
         MainThread.Abort();
         try
         {
-            newSocket.Shutdown(SocketShutdown.Both);
-            newSocket.Close();
+            jitter.Server.Shutdown(SocketShutdown.Both);
+            jitter.Server.Close();
+            
         }
 
         catch (SystemException e)
@@ -504,6 +508,8 @@ public class clientUDP : MonoBehaviour
             Debug.Log(e.ToString());
 
         }
+        if(jitter.start != null)
+            jitter.start.Abort();
         if (MainThread != null)
             MainThread.Abort();
         if (receiveThread != null)
@@ -516,7 +522,7 @@ public class clientUDP : MonoBehaviour
     {
         try
         {
-            newSocket.Close();
+            jitter.Server.Close();
 
         }
 
@@ -526,6 +532,8 @@ public class clientUDP : MonoBehaviour
             Debug.Log(e.ToString());
 
         }
+          if(jitter.start != null)
+            jitter.start.Abort();
         if (MainThread != null)
             MainThread.Abort();
         if (receiveThread != null)
