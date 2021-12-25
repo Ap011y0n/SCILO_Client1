@@ -187,9 +187,16 @@ public class clientUDP : MonoBehaviour
         {
             for (int i = 0; i < WaitingToSpawn.Count; i++)
             {
-                Debug.Log("Spawning: " + WaitingToSpawn[i].name);
                 if (!dynamicObjects.ContainsKey(WaitingToSpawn[i].guid))
+                {
+                    if(Convert.ToInt32(WaitingToSpawn[i].name) != 0 && Convert.ToInt32(WaitingToSpawn[i].name) != 2)
                     dynamicObjects.Add(WaitingToSpawn[i].guid, Instantiate(prefabs[Convert.ToInt32(WaitingToSpawn[i].name)], WaitingToSpawn[i].position, WaitingToSpawn[i].rotation));
+                    else
+                    {
+                        Instantiate(prefabs[Convert.ToInt32(WaitingToSpawn[i].name)], WaitingToSpawn[i].position, WaitingToSpawn[i].rotation);
+                    }
+                    Debug.Log("Spawning: " + WaitingToSpawn[i].name);
+                }
             }
             WaitingToSpawn.Clear();
         }
@@ -572,6 +579,8 @@ public class clientUDP : MonoBehaviour
 
     CustomClasses.Message deserializeJson(MemoryStream stream)
     {
+      //  Debug.Log("message received");
+
         var m = new CustomClasses.Message();
         BinaryReader reader = new BinaryReader(stream);
         stream.Seek(0, SeekOrigin.Begin);
