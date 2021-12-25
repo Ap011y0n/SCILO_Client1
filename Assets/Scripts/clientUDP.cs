@@ -31,6 +31,7 @@ namespace CustomClasses
         public List<Input> inputs = new List<Input>();
         public List<Remove> removals = new List<Remove>();
         public List<Spawn> spawns = new List<Spawn>();
+        public List<string> states = new List<string>();
 
         public void addType(string type)
         {
@@ -152,6 +153,7 @@ public class clientUDP : MonoBehaviour
     public Dictionary<string, GameObject> spawnable;
 
     private List<CustomClasses.Input> inputList = new List<CustomClasses.Input>();
+    private List<string> stateList = new List<string>();
     [HideInInspector]
     public List<CustomClasses.SceneObject> Objs2Update = new List<CustomClasses.SceneObject>();
     int ACK = -1;
@@ -278,6 +280,10 @@ public class clientUDP : MonoBehaviour
         newInput.key = mousebutton.ToString();
         newInput.type = type;
         inputList.Add(newInput);
+    }
+    public void AddState(string state)
+    {
+        stateList.Add(state);
     }
     public void ExecuteScript()
     {
@@ -408,6 +414,7 @@ public class clientUDP : MonoBehaviour
                     temp.addType("acknowledgement");
                     temp.ACK = ACK;
                     temp.inputs = inputList;
+                    temp.states = stateList;
                     sentMessages.Add(temp);
                     ACK++;
                 }
@@ -559,6 +566,7 @@ public class clientUDP : MonoBehaviour
         BinaryWriter writer = new BinaryWriter(stream);
         writer.Write(json);
         inputList.Clear();
+        stateList.Clear();
         return stream;
     }
 

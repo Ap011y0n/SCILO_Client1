@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class playerClient : MonoBehaviour
 {
@@ -8,6 +9,15 @@ public class playerClient : MonoBehaviour
     private Animator animator;
     int jumpAnimation;
     int shootAnimation;
+    State playerState;
+
+    enum State
+    {
+        IDLE,
+        WALK,
+        JUMP
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,24 +36,32 @@ public class playerClient : MonoBehaviour
             clientObj.GetComponent<clientUDP>().AddInput(KeyCode.D, "KeyPressed");
             // Debug.Log("D key Pressed");
             animator.SetFloat("isWalking", 1f);
+            SetState("WALK");
+            clientObj.GetComponent<clientUDP>().AddState(GetState());
         }
         if (Input.GetKey(KeyCode.A))
         {
             clientObj.GetComponent<clientUDP>().AddInput(KeyCode.A, "KeyPressed");
             // Debug.Log("A key Pressed");
             animator.SetFloat("isWalking", 0f);
+            SetState("WALK");
+            clientObj.GetComponent<clientUDP>().AddState(GetState());
         }
         if (Input.GetKeyUp(KeyCode.D))
         {
            // Debug.Log("D key Up");
             clientObj.GetComponent<clientUDP>().AddInput(KeyCode.D, "KeyUp");
             animator.SetFloat("isWalking", 0.5f);
+            SetState("IDLE");
+            clientObj.GetComponent<clientUDP>().AddState(GetState());
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
            // Debug.Log("A key Up");
             clientObj.GetComponent<clientUDP>().AddInput(KeyCode.A, "KeyUp");
             animator.SetFloat("isWalking", 0.5f);
+            SetState("IDLE");
+            clientObj.GetComponent<clientUDP>().AddState(GetState());
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -56,6 +74,18 @@ public class playerClient : MonoBehaviour
         {
             clientObj.GetComponent<clientUDP>().AddInput(KeyCode.Space, "KeyDown");
             animator.SetTrigger(jumpAnimation);
+            SetState("JUMP");
+            clientObj.GetComponent<clientUDP>().AddState(GetState());
         }
+    }
+
+    public void SetState(string state)
+    {
+        playerState = (State)Enum.Parse(typeof(State), state, true);
+    }
+
+    public string GetState()
+    {
+        return playerState.ToString();
     }
 }
