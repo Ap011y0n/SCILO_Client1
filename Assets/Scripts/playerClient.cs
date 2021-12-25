@@ -10,6 +10,7 @@ public class playerClient : MonoBehaviour
     int jumpAnimation;
     int shootAnimation;
     State playerState;
+    [HideInInspector]
     public CustomClasses.PlayerState updateState;
 
     enum State
