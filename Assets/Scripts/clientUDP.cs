@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace CustomClasses
 {
@@ -15,6 +16,7 @@ namespace CustomClasses
     [System.Serializable]
     public class WelcomeMessage
     {
+        public int livesLeft = 10;
         public string GUIDplayer1;
         public string GUIDplayer2;
         public string GUIDgun1;
@@ -27,6 +29,7 @@ namespace CustomClasses
     public class Message
     {
         public int ACK = 0;
+        public int livesLeft = 10;
         public List<string> messageTypes = new List<string>();
         public List<SceneObject> objects = new List<SceneObject>();
         public List<Input> inputs = new List<Input>();
@@ -183,6 +186,9 @@ public class clientUDP : MonoBehaviour
     private bool victory = false;
     private bool defeat = false;
 
+    public Text m_MyText;
+    public int livesLeft = 10;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -192,7 +198,9 @@ public class clientUDP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(defeat)
+        m_MyText.text = livesLeft.ToString();
+
+        if (defeat)
         {
             SceneManager.LoadScene("defeat");
         }
@@ -367,6 +375,8 @@ public class clientUDP : MonoBehaviour
             dynamicObjects.Add(m.GUIDgun1, initialDynamicObjs[2]);
             dynamicObjects.Add(m.GUIDgun2, initialDynamicObjs[3]);
 
+            livesLeft = m.livesLeft;
+
             for (int i = 0; i < m.spawns.Count; i++)
             {
                 WaitingToSpawn.Add(m.spawns[i]);
@@ -524,7 +534,6 @@ public class clientUDP : MonoBehaviour
             if (m.messageTypes.Contains("acknowledgement"))
                 if (ACK > m.ACK)
                 {
-                    Debug.LogError("ACK ERROR");
                     CustomClasses.Message temp = new CustomClasses.Message();
                     for (int i = 0; i < sentMessages.Count; i++)
                     {
@@ -565,7 +574,10 @@ public class clientUDP : MonoBehaviour
                     stateList.Add(m.states[i]);
                 }
             }
-
+            if (m.messageTypes.Contains("respawn"))
+            {
+                livesLeft = m.livesLeft;
+            }
         }
 
     }
