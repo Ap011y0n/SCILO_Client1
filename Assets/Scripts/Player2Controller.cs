@@ -11,6 +11,7 @@ public class Player2Controller : MonoBehaviour
     int shootAnimation;
     Vector3 lastPos;
     int frameCounter;
+    [HideInInspector]
     public CustomClasses.PlayerState updateState;
     State playerState;
 

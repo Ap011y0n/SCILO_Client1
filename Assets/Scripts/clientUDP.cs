@@ -223,7 +223,7 @@ public class clientUDP : MonoBehaviour
                 GameObject obj2update = dynamicObjects[stateList[i].player.guid];
                 if(obj2update != null)
                 {
-                    if(obj2update.GetComponent<playerClient>() != null)
+                    if (obj2update.GetComponent<playerClient>() != null)
                     {
                         obj2update.GetComponent<playerClient>().updateState = stateList[i];
                     }
@@ -233,6 +233,7 @@ public class clientUDP : MonoBehaviour
                     }
                 }
             }
+            stateList.Clear();
         }
         if (Objs2Update.Count > 0)
         {
