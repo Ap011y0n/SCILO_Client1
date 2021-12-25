@@ -10,11 +10,13 @@ public class playerClient : MonoBehaviour
     int jumpAnimation;
     int shootAnimation;
     State playerState;
+    public CustomClasses.PlayerState updateState;
 
     enum State
     {
         IDLE,
-        WALK,
+        WALK_RIGHT,
+        WALK_LEFT,
         JUMP
     }
 
@@ -36,16 +38,16 @@ public class playerClient : MonoBehaviour
             clientObj.GetComponent<clientUDP>().AddInput(KeyCode.D, "KeyPressed");
             // Debug.Log("D key Pressed");
             animator.SetFloat("isWalking", 1f);
-            SetState("WALK");
-            clientObj.GetComponent<clientUDP>().AddState(GetState());
+            SetState("WALK_RIGHT");
+            //clientObj.GetComponent<clientUDP>().AddState(GetState());
         }
         if (Input.GetKey(KeyCode.A))
         {
             clientObj.GetComponent<clientUDP>().AddInput(KeyCode.A, "KeyPressed");
             // Debug.Log("A key Pressed");
             animator.SetFloat("isWalking", 0f);
-            SetState("WALK");
-            clientObj.GetComponent<clientUDP>().AddState(GetState());
+            SetState("WALK_LEFT");
+            //clientObj.GetComponent<clientUDP>().AddState(GetState());
         }
         if (Input.GetKeyUp(KeyCode.D))
         {
@@ -53,7 +55,7 @@ public class playerClient : MonoBehaviour
             clientObj.GetComponent<clientUDP>().AddInput(KeyCode.D, "KeyUp");
             animator.SetFloat("isWalking", 0.5f);
             SetState("IDLE");
-            clientObj.GetComponent<clientUDP>().AddState(GetState());
+            //clientObj.GetComponent<clientUDP>().AddState(GetState());
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
@@ -61,7 +63,7 @@ public class playerClient : MonoBehaviour
             clientObj.GetComponent<clientUDP>().AddInput(KeyCode.A, "KeyUp");
             animator.SetFloat("isWalking", 0.5f);
             SetState("IDLE");
-            clientObj.GetComponent<clientUDP>().AddState(GetState());
+            //clientObj.GetComponent<clientUDP>().AddState(GetState());
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -75,7 +77,7 @@ public class playerClient : MonoBehaviour
             clientObj.GetComponent<clientUDP>().AddInput(KeyCode.Space, "KeyDown");
             animator.SetTrigger(jumpAnimation);
             SetState("JUMP");
-            clientObj.GetComponent<clientUDP>().AddState(GetState());
+            //clientObj.GetComponent<clientUDP>().AddState(GetState());
         }
     }
 

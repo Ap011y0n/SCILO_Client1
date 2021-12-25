@@ -31,7 +31,7 @@ namespace CustomClasses
         public List<Input> inputs = new List<Input>();
         public List<Remove> removals = new List<Remove>();
         public List<Spawn> spawns = new List<Spawn>();
-        public List<string> states = new List<string>();
+        public List<PlayerState> states = new List<PlayerState>();
 
         public void addType(string type)
         {
@@ -126,6 +126,12 @@ namespace CustomClasses
             return Obj;
         }
     }
+    [System.Serializable]
+    public class PlayerState
+    {
+        public string state;
+        public SceneObject player;
+    }
     #endregion
 
 }
@@ -153,7 +159,7 @@ public class clientUDP : MonoBehaviour
     public Dictionary<string, GameObject> spawnable;
 
     private List<CustomClasses.Input> inputList = new List<CustomClasses.Input>();
-    private List<string> stateList = new List<string>();
+    private List<CustomClasses.PlayerState> stateList = new List<CustomClasses.PlayerState>();
     [HideInInspector]
     public List<CustomClasses.SceneObject> Objs2Update = new List<CustomClasses.SceneObject>();
     int ACK = -1;
@@ -202,6 +208,24 @@ public class clientUDP : MonoBehaviour
                 dynamicObjects.Remove(WaitingToRemove[i].guid);
             }
             WaitingToRemove.Clear();
+        }
+        if (stateList.Count > 0)
+        {
+            for (int i = 0; i < stateList.Count; i++)
+            {
+                GameObject obj2update = dynamicObjects[stateList[i].player.guid];
+                if(obj2update != null)
+                {
+                    if(obj2update.GetComponent<playerClient>() != null)
+                    {
+                        obj2update.GetComponent<playerClient>().updateState = stateList[i];
+                    }
+                    else if(obj2update.GetComponent<Player2Controller>() != null)
+                    {
+                        obj2update.GetComponent<Player2Controller>().UpdateState(stateList[i]);
+                    }
+                }
+            }
         }
         if (Objs2Update.Count > 0)
         {
@@ -281,10 +305,10 @@ public class clientUDP : MonoBehaviour
         newInput.type = type;
         inputList.Add(newInput);
     }
-    public void AddState(string state)
+    /*public void AddState(string state)
     {
         stateList.Add(state);
-    }
+    }*/
     public void ExecuteScript()
     {
         adress = IPAddress.Parse("127.0.0.1");
@@ -414,7 +438,7 @@ public class clientUDP : MonoBehaviour
                     temp.addType("acknowledgement");
                     temp.ACK = ACK;
                     temp.inputs = inputList;
-                    temp.states = stateList;
+                    //temp.states = stateList;
                     sentMessages.Add(temp);
                     ACK++;
                 }
@@ -500,6 +524,13 @@ public class clientUDP : MonoBehaviour
                 for (int i = 0; i < m.removals.Count; i++)
                 {
                     WaitingToRemove.Add(m.removals[i]);
+                }
+            }
+            if(m.states.Count > 0)
+            {
+                for (int i = 0; i < m.states.Count; i++)
+                {
+                    stateList.Add(m.states[i]);
                 }
             }
 
