@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CustomClasses
 {
@@ -179,6 +180,9 @@ public class clientUDP : MonoBehaviour
     public Quaternion gunRotation;
     public GameObject gun;
     public jitterSender jitter;
+    private bool victory = false;
+    private bool defeat = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -188,6 +192,14 @@ public class clientUDP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(defeat)
+        {
+            SceneManager.LoadScene("defeat");
+        }
+        if (victory)
+        {
+            SceneManager.LoadScene("victory");
+        }
         gunRotation = gun.transform.rotation;
         if (WaitingToSpawn.Count > 0)
         {
@@ -475,7 +487,19 @@ public class clientUDP : MonoBehaviour
             // Debug.Log(Encoding.ASCII.GetString(msg));
             MemoryStream stream = new MemoryStream(msg);
             CustomClasses.Message m = deserializeJson(stream);
-            if(m.messageTypes.Contains("movement"))
+            if (m.messageTypes.Contains("Defeat"))
+            {
+                defeat = true;
+                EndConnection();
+
+            }
+            if (m.messageTypes.Contains("Victory"))
+            {
+                victory = true;
+                EndConnection();
+
+            }
+            if (m.messageTypes.Contains("movement"))
             {
                 foreach (CustomClasses.SceneObject obj in m.objects)
                 {
