@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1575793, g: 0.1854643, b: 0.20852813, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -153,7 +153,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 418031864}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -482,6 +482,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 1716919587}
   - {fileID: 74246814}
   - {fileID: 1278931344}
   - {fileID: 481350754}
@@ -527,7 +528,7 @@ RectTransform:
   m_Children:
   - {fileID: 88866630}
   m_Father: {fileID: 418031864}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -671,7 +672,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 418031864}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -868,7 +869,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+<<<<<<< Updated upstream
 --- !u!1 &1633962581
+=======
+--- !u!1 &1716919586
+>>>>>>> Stashed changes
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -876,6 +881,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< Updated upstream
   - component: {fileID: 1633962582}
   - component: {fileID: 1633962586}
   - component: {fileID: 1633962585}
@@ -883,17 +889,29 @@ GameObject:
   - component: {fileID: 1633962583}
   m_Layer: 5
   m_Name: Button (1)
+=======
+  - component: {fileID: 1716919587}
+  - component: {fileID: 1716919589}
+  - component: {fileID: 1716919588}
+  m_Layer: 5
+  m_Name: Image
+>>>>>>> Stashed changes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< Updated upstream
 --- !u!224 &1633962582
+=======
+--- !u!224 &1716919587
+>>>>>>> Stashed changes
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_GameObject: {fileID: 1633962581}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -909,11 +927,28 @@ RectTransform:
   m_SizeDelta: {x: 242.54, y: 84.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1633962583
+=======
+  m_GameObject: {fileID: 1716919586}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 418031864}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 291.5, y: 173.6}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1716919588
+>>>>>>> Stashed changes
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_GameObject: {fileID: 1633962581}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -983,21 +1018,33 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1633962581}
+=======
+  m_GameObject: {fileID: 1716919586}
+>>>>>>> Stashed changes
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
+<<<<<<< Updated upstream
   m_Color: {r: 0.26074845, g: 0.21106264, b: 0.8773585, a: 1}
+=======
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+>>>>>>> Stashed changes
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
+<<<<<<< Updated upstream
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
+=======
+  m_Sprite: {fileID: 21300000, guid: 2427e517076b3054ab6ffd4f46ef5068, type: 3}
+  m_Type: 0
+>>>>>>> Stashed changes
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1006,13 +1053,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+<<<<<<< Updated upstream
 --- !u!222 &1633962586
+=======
+--- !u!222 &1716919589
+>>>>>>> Stashed changes
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_GameObject: {fileID: 1633962581}
+=======
+  m_GameObject: {fileID: 1716919586}
+>>>>>>> Stashed changes
   m_CullTransparentMesh: 1
 --- !u!1 &1841013988
 GameObject:
