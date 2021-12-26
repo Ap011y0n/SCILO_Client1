@@ -487,97 +487,106 @@ public class clientUDP : MonoBehaviour
     {
         while (true)
         {
-            byte[] msg = new Byte[10000];
-
-            jitter.Server.ReceiveFrom(msg, ref Remote);
-            if (receiveFrameCounter == 0)
-                receiveFrameCounter = 1;
-            interpolationValue = 1.0f / receiveFrameCounter;
-            firstInterpolationFrame = true;
-            receiveFrameCounter = 0;
-            // Debug.Log(Encoding.ASCII.GetString(msg));
-            MemoryStream stream = new MemoryStream(msg);
-            CustomClasses.Message m = deserializeJson(stream);
-            if (m.messageTypes.Contains("Defeat"))
+            try
             {
-                defeat = true;
-                EndConnection();
+                byte[] msg = new Byte[10000];
 
-            }
-            if (m.messageTypes.Contains("Victory"))
-            {
-                victory = true;
-                EndConnection();
-
-            }
-            if (m.messageTypes.Contains("movement"))
-            {
-                foreach (CustomClasses.SceneObject obj in m.objects)
+                jitter.Server.ReceiveFrom(msg, ref Remote);
+                if (receiveFrameCounter == 0)
+                    receiveFrameCounter = 1;
+                interpolationValue = 1.0f / receiveFrameCounter;
+                firstInterpolationFrame = true;
+                receiveFrameCounter = 0;
+                // Debug.Log(Encoding.ASCII.GetString(msg));
+                MemoryStream stream = new MemoryStream(msg);
+                CustomClasses.Message m = deserializeJson(stream);
+                if (m.messageTypes.Contains("Defeat"))
                 {
-                    // GameObject obj2update = GameObject.Find(obj.name);
-                    Objs2Update.Add(obj);
-                    //   obj2update.transform.position = obj.transform.position;
+                    defeat = true;
+                    EndConnection();
+
                 }
-            }
-            
-            int max = sentMessages.Count;
-         //   Debug.Log(max);
-            for (int i = 0; i < max; i++)
-            {
-                if (sentMessages[i].ACK <= m.ACK)
+                if (m.messageTypes.Contains("Victory"))
                 {
-                    sentMessages.RemoveAt(i);
-                    i--;
-                    max--;
+                    victory = true;
+                    EndConnection();
+
                 }
-            }
-            if (m.messageTypes.Contains("acknowledgement"))
-                if (ACK > m.ACK)
+                if (m.messageTypes.Contains("movement"))
                 {
-                    CustomClasses.Message temp = new CustomClasses.Message();
-                    for (int i = 0; i < sentMessages.Count; i++)
+                    foreach (CustomClasses.SceneObject obj in m.objects)
                     {
-                        if (sentMessages[i].ACK > m.ACK)
-                        {
-                            for (int j = 0; j < sentMessages[i].inputs.Count; j++)
-                                temp.inputs.Add(sentMessages[i].inputs[j]);
-                        }
+                        // GameObject obj2update = GameObject.Find(obj.name);
+                        Objs2Update.Add(obj);
+                        //   obj2update.transform.position = obj.transform.position;
                     }
+                }
 
-                    temp.ACK = ACK;
-                    stream = serializeJson(temp);
-                    jitter.sendMessage(stream.ToArray(), ipep);
-                   // newSocket.SendTo(stream.ToArray(), SocketFlags.None, ipep);
-                    sentMessages.Clear();
-                    sentMessages.Add(temp);
-                }
-            if (m.messageTypes.Contains("spawn"))
-            {
-                for(int i = 0; i < m.spawns.Count; i++)
+                int max = sentMessages.Count;
+                //   Debug.Log(max);
+                for (int i = 0; i < max; i++)
                 {
+                    if (sentMessages[i].ACK <= m.ACK)
+                    {
+                        sentMessages.RemoveAt(i);
+                        i--;
+                        max--;
+                    }
+                }
+                if (m.messageTypes.Contains("acknowledgement"))
+                    if (ACK > m.ACK)
+                    {
+                        CustomClasses.Message temp = new CustomClasses.Message();
+                        for (int i = 0; i < sentMessages.Count; i++)
+                        {
+                            if (sentMessages[i].ACK > m.ACK)
+                            {
+                                for (int j = 0; j < sentMessages[i].inputs.Count; j++)
+                                    temp.inputs.Add(sentMessages[i].inputs[j]);
+                            }
+                        }
 
-           
-                    WaitingToSpawn.Add(m.spawns[i]);
-                }
-            }
-            if (m.messageTypes.Contains("remove"))
-            {
-                for (int i = 0; i < m.removals.Count; i++)
+                        temp.ACK = ACK;
+                        stream = serializeJson(temp);
+                        jitter.sendMessage(stream.ToArray(), ipep);
+                        // newSocket.SendTo(stream.ToArray(), SocketFlags.None, ipep);
+                        sentMessages.Clear();
+                        sentMessages.Add(temp);
+                    }
+                if (m.messageTypes.Contains("spawn"))
                 {
-                    WaitingToRemove.Add(m.removals[i]);
+                    for (int i = 0; i < m.spawns.Count; i++)
+                    {
+
+
+                        WaitingToSpawn.Add(m.spawns[i]);
+                    }
                 }
-            }
-            if(m.states.Count > 0)
-            {
-                for (int i = 0; i < m.states.Count; i++)
+                if (m.messageTypes.Contains("remove"))
                 {
-                    stateList.Add(m.states[i]);
+                    for (int i = 0; i < m.removals.Count; i++)
+                    {
+                        WaitingToRemove.Add(m.removals[i]);
+                    }
+                }
+                if (m.states.Count > 0)
+                {
+                    for (int i = 0; i < m.states.Count; i++)
+                    {
+                        stateList.Add(m.states[i]);
+                    }
+                }
+                if (m.messageTypes.Contains("respawn"))
+                {
+                    livesLeft = m.livesLeft;
                 }
             }
-            if (m.messageTypes.Contains("respawn"))
+            catch (SystemException e)
             {
-                livesLeft = m.livesLeft;
+                Debug.Log(e.ToString());
+
             }
+          
         }
 
     }
