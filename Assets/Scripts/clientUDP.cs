@@ -292,7 +292,7 @@ public class clientUDP : MonoBehaviour
                             obj2update.transform.position = obj2update.transform.position + newpos;
 
                             obj2update.transform.rotation = Objs2Update[i].rotation;
-
+                         //   Debug.Log("interpolate with" + interpolationValue);
                             interpolationTracker += interpolationValue;
                         }
                         else
@@ -395,8 +395,8 @@ public class clientUDP : MonoBehaviour
             Debug.Log("Couldn't send or receive message");
             Debug.Log(e.ToString());
             Debug.Log("Disconnecting from server");
-            EndConnection();
-            SceneManager.LoadScene("MenuScene");
+            EndConnection("MenuScene");
+         //   SceneManager.LoadScene("MenuScene");
 
         }
 
@@ -497,13 +497,13 @@ public class clientUDP : MonoBehaviour
                 if (m.messageTypes.Contains("Defeat"))
                 {
                     defeat = true;
-                    EndConnection();
+                    EndConnection("defeat");
 
                 }
                 if (m.messageTypes.Contains("Victory"))
                 {
                     victory = true;
-                    EndConnection();
+                    EndConnection("victory");
 
                 }
                 if (m.messageTypes.Contains("movement"))
@@ -585,7 +585,7 @@ public class clientUDP : MonoBehaviour
 
     }
 
-    public void EndConnection()
+    public void EndConnection(string scene)
     {
         Debug.Log("Disconnecting from server");
         MainThread.Abort();
@@ -610,6 +610,8 @@ public class clientUDP : MonoBehaviour
             receiveThread.Abort();
         if (sendThread != null)
             sendThread.Abort();
+        SceneManager.LoadScene(scene);
+
     }
 
     void OnApplicationQuit()
